@@ -6,7 +6,7 @@ const { Client } = require("discord.js");
  */
 
 module.exports = async (client, PG, Ascii) => {
-    const table = new Ascii("Command Loaded");
+    const table = new Ascii("Commands Loaded");
 
     CommandsArray = [];
 

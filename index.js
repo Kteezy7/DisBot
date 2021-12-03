@@ -9,21 +9,19 @@ const Ascii = require("ascii-table");
 
 client.commands = new Collection();
 
-const { Distube } = require("distube");
+const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 
-// client.distube = new Distube(client, {
-//     emitNewSongOnly: true,
-//     leaveOnFinish: true,
-//     emitAddSongWhenCreatingQueue: false,
-//     plugins: [new SpotifyPlugin()]
-// });
-// module.exports = client;
+client.distube = new DisTube(client, {
+    emitNewSongOnly: true,
+    leaveOnFinish: true,
+    emitAddSongWhenCreatingQueue: false,
+    plugins: [new SpotifyPlugin()],
+});
+module.exports = client;
 
 ["events", "commands"].forEach((handler) => {
     require(`./handlers/${handler}`)(client, PG, Ascii);
 });
-// require("./handlers/events")(client);
-// require("./handlers/commands")(client);
 
 client.login(Token);
