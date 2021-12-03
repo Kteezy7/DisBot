@@ -10,7 +10,7 @@ module.exports = {
      */
     execute(client) {
         console.log("The client is now ready");
-        client.user.setActivity("Hello!", { type: "WATCHING" });
+        client.user.setActivity("xqcL", { type: "WATCHING" });
 
         if (!Database) return;
         mongoose

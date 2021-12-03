@@ -46,11 +46,13 @@ module.exports = {
                     type: "STRING",
                     required: true,
                     choices: [
-                        { name: "queue", value: "queue" },
-                        { name: "skip", value: "skip" },
-                        { name: "pause", value: "pause" },
-                        { name: "resume", value: "resume" },
-                        { name: "stop", value: "stop" },
+                        { name: "🔢 View Queue", value: "queue" },
+                        { name: "⏭️ Skip Song", value: "skip" },
+                        { name: "⏸️ Pause Song", value: "pause" },
+                        { name: "⏯️ Resume Song", value: "resume" },
+                        { name: "⏹️ Stop Music", value: "stop" },
+                        { name: "🔀 Shuffle Queue", value: "shuffle"},
+                        { name: "🔂 Toggle Repeat Mode", value: "repeat"}
                     ],
                 },
             ],
@@ -119,35 +121,47 @@ module.exports = {
                             return interaction.reply({
                                 content: "⏭️ Song Skipped",
                             });
+
                         case "stop":
                             await queue.stop(VoiceChannel);
                             return interaction.reply({
                                 content: "⏹️ Song Stopped",
                             });
+
                         case "pause":
                             await queue.pause(VoiceChannel);
                             return interaction.reply({
                                 content: "⏸️ Song Paused",
                             });
+
                         case "resume":
                             await queue.resume(VoiceChannel);
                             return interaction.reply({
                                 content: "⏯️ Song Resumed",
                             });
-                        case "queue":
+
+                        case "shuffle":
+                            await queue.shuffle(VoiceChannel);
                             return interaction.reply({
-                                embeds: [
-                                    new MessageEmbed()
-                                        .setColor("PURPLE")
-                                        .setDescription(
-                                            `${queue.songs.map(
-                                                (song, id) =>
-                                                    `\n**{id + 1}**. ${song.name} - \`${song.formattedDuration}\``
-                                            )}`
-                                        ),
-                                ],
+                                content: "🔀 The queue has been shuffled",
                             });
-                    }
+
+                        case "repeat":
+                            let mode = await client.distube.setRepeatMode(queue);
+                            return interaction.reply({
+                                content: `🔂 Repeat mode is set to 
+                                ${mode = mode ? mode == 2 ? "Queue" : "Song" : "Off" }`
+                            });
+
+                        case "queue":
+                            return interaction.reply({embeds: [new MessageEmbed()
+                            .setColor("PURPLE")
+                            .setDescription(`${queue.songs.map(
+                                (song, id) =>
+                                `\n**{id + 1}**. ${song.name} - 
+                                \`${song.formattedDuration}\``)}`
+                            )]});
+                        }
                     return;
                 }
             }
